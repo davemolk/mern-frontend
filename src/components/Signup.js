@@ -28,6 +28,28 @@ const Signup = () => {
     setConfirmPassword(e.target.value);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (password === confirmPassword && password.length >= 8) {
+      const payload = { name, email, password };
+      const url = `${REACT_APP_SERVER_URL}/api/users/signup`;
+      axios
+        .post(url, payload)
+        .then((response) => {
+          console.log(response.data);
+          setRedirect(true);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      alert("Password needs to be at least 8 characters. Please try again");
+    }
+  };
+
+  if (redirect) return <Redirect to="/login" />;
+
   return (
     <div className="row mt-4">
       <div className="col-md-7 offset-md-3">
